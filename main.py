@@ -1,6 +1,8 @@
 from db import SessionLocal
 from fastapi import FastAPI
 # from fastapi_utils.tasks import repeat_every
+from models.users import Users
+from routes.auth import get_password_hash
 from sqlalchemy.orm import Session
 
 
@@ -107,3 +109,19 @@ app.include_router(
 	responses={200: {'description': 'Ok'}, 201: {'description': 'Created'}, 400: {'description': 'Bad Request'},
 	           401: {'desription': 'Unauthorized'}}
 )
+
+try:
+  db=SessionLocal()
+  new_user_db = Users(
+    name='Mominjon',
+    username='www',
+    number='form.number',
+    password=get_password_hash('816'),
+    roll='www',
+    status=True,
+  )
+  db.add(new_user_db)
+  db.commit()
+  db.refresh(new_user_db)
+except Exception :
+  print(Exception)
